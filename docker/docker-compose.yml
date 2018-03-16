@@ -1,0 +1,43 @@
+version: '3.3'
+services:
+    MysqlData:
+      container_name: mysql_data
+      image: busybox
+      volumes:
+        - ./mysql-data:/var/lib/mysql
+
+    MySQLServer:
+      image: mysql
+      container_name: mysql_server
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_USER: root
+        MYSQL_PASSWORD: root
+        MYSQL_DATABASE: db
+      ports:
+        - "3306:3306"
+      volumes:
+        - ./mysql-data
+
+    PhpMyAdmin:
+      image: nazarpc/phpmyadmin
+      container_name: phpMyAdmin
+      ports:
+        - "8090:80"
+      links:
+        - MySQLServer:mysql
+
+    smog_api:
+        build: smog-api
+        depends_on:
+         - MySQLServer
+        container_name: smog_api
+        ports:
+          - "6333:3333"
+        volumes:
+          - ../app:/var/www/smog-api
+        tty: true
+        links:
+          - MySQLServer:mysql
+
+
