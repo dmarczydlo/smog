@@ -36,6 +36,6 @@ WORKDIR /var/www/smog-api
 CMD rm -rf ./node_modules \
     && source $NVM_DIR/nvm.sh \
     && npm install -g pm2 yarn --no-optional \
-    && npm install \
+    && yarn \
     && pm2-docker process.config.js \
     bash
