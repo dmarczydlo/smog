@@ -10,10 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     gegrLat: DataTypes.STRING,
     gegrLon: DataTypes.STRING,
     city: DataTypes.STRING,
-    street: DataTypes.STRING
+    street: DataTypes.STRING,
+    internalStationId: DataTypes.INTEGER
   }, {});
   Station.associate = function(models) {
-    // associations can be defined here
+      Station.hasMany(models.Sensor, { foreignKey: 'stationId'} );
   };
   return Station;
 };
