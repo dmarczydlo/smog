@@ -3,14 +3,32 @@
     "username": "root",
     "password": "root",
     "database": "db",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "host": "mysql",
+    "dialect": "mysql",
+    "define": {
+      "underscored": false,
+      "freezeTableName": false,
+      "charset": "utf8",
+      "dialectOptions": {
+        "collate": "utf8_general_ci"
+      },
+      "timestamps": true
+    }
   },
   "production": {
     "username": "root",
     "password": "root",
     "database": "db",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "host": "mysql",
+    "dialect": "mysql",
+    "define": {
+      "underscored": false,
+      "freezeTableName": false,
+      "charset": "utf8",
+      "dialectOptions": {
+        "collate": "utf8_general_ci"
+      },
+      "timestamps": true
+    }
   }
 }

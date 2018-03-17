@@ -1,32 +1,27 @@
 'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('Stations', {
+        return queryInterface.createTable('Sensors', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            stationName: {
+            paramName: {
                 type: Sequelize.STRING
             },
-            gegrLat: {
+            paramCode: {
                 type: Sequelize.STRING
             },
-            gegrLon: {
-                type: Sequelize.STRING
-            },
-            city: {
-                type: Sequelize.STRING
-            },
-            street: {
-                type: Sequelize.STRING
-            },
-            internalStationId: {
+            sensorId: {
                 type: Sequelize.INTEGER
             },
-
+            stationId: {
+                type: Sequelize.INTEGER,
+                foreignKey: true,
+                allowNull: false
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE
@@ -38,6 +33,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('Stations');
+        return queryInterface.dropTable('Sensors');
     }
 };
