@@ -1,8 +1,10 @@
 const request = require('request');
 const Station = require('../models').Station;
 const Sensor = require('../models').Sensor;
+const Data = require('../models').Data;
 
 const PATH_SENSORS = 'http://api.gios.gov.pl/pjp-api/rest/station/sensors/';
+const PATH_DATA = 'http://api.gios.gov.pl/pjp-api/rest/data/getData/';
 
 
 module.exports.insertStations = async (stations) => {
@@ -23,6 +25,29 @@ module.exports.insertStations = async (stations) => {
     }));
 };
 
+saveData = async (sensor) => {
+    request.get({
+        url: `${PATH_DATA}${sensor.id}`,
+    }, async (error, response, body) => {
+        const data = JSON.parse(body);
+
+        await Promise.all(data.values.map(async (element) => {
+            const row = await Data.findOne({where: {sensorId: sensor.id, key: data.key, date: element.date, value: element.value}});
+            if (element.value && element.value !== null) {
+                if (row === null) {
+                    console.log(element.value);
+                    await Data.create({
+                        key: data.key,
+                        date: element.date,
+                        value: element.value,
+                        sensorId: sensor.id
+                    });
+                }
+            }
+        }));
+    });
+};
+
 module.exports.saveSensorsToStation = async (station) => {
     request.get({
         url: `${PATH_SENSORS}${station.id}`,
@@ -40,6 +65,7 @@ module.exports.saveSensorsToStation = async (station) => {
                     stationId: station.id
                 });
             }
+            await saveData(sensor);
         }));
 
     });
